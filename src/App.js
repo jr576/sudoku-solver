@@ -11,7 +11,6 @@ class SudokuGrid extends Component {
     }
 
     handleInputChange = (row, col, value) => {
-        // Ensure value is parsed as an integer or set to 0 if empty
         const parsedValue = value ? parseInt(value, 10) : 0;
         const newGrid = this.state.grid.map(row => [...row]);
         newGrid[row][col] = parsedValue;
@@ -20,9 +19,8 @@ class SudokuGrid extends Component {
 
     solveSudoku = () => {
         const solvedGrid = solve(this.state.grid);
-        if (solvedGrid) {
+        if (solvedGrid)
             this.setState({ grid: solvedGrid });
-        }
     }
 
     resetGrid = () => {
@@ -54,16 +52,7 @@ class SudokuGrid extends Component {
     }
 }
 
-class App extends Component {
-    render() {
-        return (
-            <div className="App">
-                <h1>Sudoku Grid</h1>
-                <SudokuGrid/>
-            </div>
-        );
-    }
-}
+
 
 function solve(grid, row = 0, col = 0) {
     if (row === 9)
@@ -76,7 +65,8 @@ function solve(grid, row = 0, col = 0) {
     for (let digit = 1; digit <= 9; digit++) {
         if (digitIsPossible(grid, row, col, digit)) {
             grid[row][col] = digit;
-            const result = solve(JSON.parse(JSON.stringify(grid)), row, col + 1);
+            let gridCopy = grid.map(row => row.slice());
+            const result = solve(gridCopy, row, col + 1);
             if (result)
                 return result;
             grid[row][col] = 0;
@@ -99,4 +89,14 @@ function digitIsPossible(grid, row, col, digit) {
     return true;
 }
 
+class App extends Component {
+    render() {
+        return (
+            <div className="App">
+                <h1>Sudoku Grid</h1>
+                <SudokuGrid/>
+            </div>
+        );
+    }
+}
 export default App;
