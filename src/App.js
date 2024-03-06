@@ -12,7 +12,7 @@ class SudokuGrid extends Component {
 
     handleInputChange = (row, col, value) => {
         const parsedValue = value ? parseInt(value, 10) : 0;
-        const newGrid = this.state.grid.map(row => [...row]);
+        const newGrid = this.state.grid.map(row => row.slice());
         newGrid[row][col] = parsedValue;
         this.setState({ grid: newGrid });
     };
@@ -31,6 +31,7 @@ class SudokuGrid extends Component {
     render() {
         return (
             <div className="sudoku-grid">
+                <h1 className="sudoku-title">Sudoku Solver</h1>
                 {this.state.grid.map((row, rowIndex) => (
                     <div key={rowIndex} className="sudoku-row">
                         {row.map((cell, colIndex) => (
@@ -45,13 +46,14 @@ class SudokuGrid extends Component {
                         ))}
                     </div>
                 ))}
+                <div className="sudoku-buttons">
                 <button onClick={this.solveSudoku}>Solve Sudoku</button>
                 <button onClick={this.resetGrid}>Reset</button>
+                </div>
             </div>
         );
     }
 }
-
 
 
 function solve(grid, row = 0, col = 0) {
@@ -93,7 +95,6 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <h1>Sudoku Grid</h1>
                 <SudokuGrid/>
             </div>
         );
